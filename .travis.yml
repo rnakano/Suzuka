@@ -6,7 +6,7 @@ install:
   - unzip dmd.${DMD_VERSION}.zip
 
 script:
-  - DMD=./dmd2/linux/bin64/dmd MODEL=64 make -f posix.mak test
+  - DMD=./dmd2/linux/bin64/dmd MODEL=64 make test
 
 branches:
   only:
