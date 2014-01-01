@@ -1,5 +1,5 @@
-ARCH = $(shell getconf LONG_BIT)
-DMD = dmd
+ARCH ?= $(shell getconf LONG_BIT)
+DMD ?= dmd
 NAMES = http main
 FILES = $(addsuffix .d, $(NAMES))
 SRCS  = $(addprefix src/, $(FILES))
