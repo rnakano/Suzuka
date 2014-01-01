@@ -1,0 +1,13 @@
+language: d
+
+install:
+  - DMD_VERSION=2.064.2
+  - wget http://ftp.digitalmars.com/dmd.${DMD_VERSION}.zip
+  - unzip dmd.${DMD_VERSION}.zip
+
+script:
+  - DMD=./dmd2/linux/bin64/dmd MODEL=64 make -f posix.mak test
+
+branches:
+  only:
+    - master
