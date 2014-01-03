@@ -5,5 +5,6 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #endif /* _SUZUKA_H_ */
