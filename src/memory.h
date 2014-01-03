@@ -3,6 +3,6 @@
 
 #include "suzuka.h"
 
-void* sk_malloc(ssize_t);
+void* sk_malloc(size_t);
 
 #endif /* _MEMORY_H_ */
