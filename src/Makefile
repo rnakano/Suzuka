@@ -1,15 +1,21 @@
 CC ?= gcc
-NAMES = main
+CPC = g++
+NAMES = http log memory
 OBJS  = $(addsuffix .o, $(NAMES))
-CFLAGS = -O0 -Wall
+MAIN  = main.o
+CFLAGS = -O0 -Wall -std=c99
 
 all: main
 
-main: $(OBJS)
+main: $(OBJS) $(MAIN)
 	$(CC) $(CFLAGS) -o main $^
 
 clean:
 	rm -f *.o
+
+test: test.cpp $(OBJS)
+	$(CPC) -Wall -lgtest -o test $^
+	./test
 
 .c.o:
 	$(CC) $(CFLAGS) -c $<
