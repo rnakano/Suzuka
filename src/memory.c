@@ -9,3 +9,7 @@ void* sk_malloc(size_t size) {
   }
   return ptr;
 }
+
+void sk_free(void* ptr) {
+  free(ptr);
+}

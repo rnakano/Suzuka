@@ -20,3 +20,8 @@ sk_http_header* sk_http_parse_header(char* str)
   strncpy(header->path, path, PATHLEN);
   return header;
 }
+
+void sk_http_header_free(sk_http_header* header)
+{
+  sk_free(header);
+}

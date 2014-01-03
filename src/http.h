@@ -10,5 +10,6 @@ typedef struct {
 } sk_http_header;
 
 sk_http_header* sk_http_parse_header(char*);
+void sk_http_header_free(sk_http_header*);
 
 #endif /* _HTTP_H_ */

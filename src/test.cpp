@@ -38,6 +38,7 @@ TEST(HttpTest, parse)
   sk_http_header* header = sk_http_parse_header(input1);
   EXPECT_TRUE(header != NULL);
   EXPECT_STREQ("/", header->path);
+  sk_http_header_free(header);
 }
 
 int main(int argc, char **argv) {
