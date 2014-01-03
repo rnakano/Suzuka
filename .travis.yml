@@ -3,7 +3,7 @@ before_install:
  - sudo apt-get update
  - sudo apt-get install libgtest-dev
  - "cd /usr/src/gtest && sudo cmake . && sudo cmake --build . && sudo mv libg* /usr/local/lib/ ; cd -"
-script: cd src && make && make test
+script: cd src && make
 compiler:
   - clang
   - gcc
