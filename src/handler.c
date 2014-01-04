@@ -3,6 +3,7 @@
 #include "handler.h"
 #include "http.h"
 #include "log.h"
+#include "file.h"
 
 int sk_send(int sockfd, char* buf, int len)
 {
@@ -19,30 +20,10 @@ void sk_handler_send_404(int sockfd)
   sk_send(sockfd, "", 0);
 }
 
-char* sk_handler_content_type(char* ext)
-{
-  if(strcmp(ext, "jpg") == 0) {
-    return "image/jpeg";
-  }
-  return "text/html";
-}
-
-void sk_handler_extname(char* path, char* ext)
-{
-  int n = strlen(path);
-  int i;
-  for (i = n-1; i >= 0; i--){
-    if(path[i] == '.') break;
-  }
-  strcpy(ext, &path[i+1]);
-}
-
 void sk_handler_send_file(int sockfd, char* rpath)
 {
   char path[256];
   sprintf(path, "../public%s", rpath);
-  char ext[8];
-  sk_handler_extname(rpath, ext);
 
   struct stat file_stat;
   stat(path, &file_stat);
@@ -56,7 +37,7 @@ void sk_handler_send_file(int sockfd, char* rpath)
 
   #define NL "\r\n"
   
-  char* content_type = sk_handler_content_type(ext);
+  const char* content_type = sk_file_content_type(rpath);
   char buff[1024];
   sprintf(buff,
           "HTTP/1.1 200 OK" NL

@@ -7,7 +7,7 @@ extern "C" {
   #include <string.h>
   #include <alloca.h>
   #include "http.h"
-  #include "handler.h"
+  #include "file.h"
 }
 
 #define cstring(varname, x) \
@@ -15,7 +15,7 @@ extern "C" {
   char* varname = (char*) alloca(strlen( (varname##_) .c_str())); \
   strcpy(varname, (varname##_).c_str()); \
 
-TEST(HttpTest, parseError)
+TEST(http, parse_error)
 {
   cstring(input1, "hogehoge");
   EXPECT_TRUE(sk_http_parse_header(input1) == NULL);
@@ -33,7 +33,7 @@ TEST(HttpTest, parseError)
   EXPECT_TRUE(sk_http_parse_header(input5) == NULL);
 }
 
-TEST(HttpTest, parse)
+TEST(http, parse)
 {
   cstring(input1, "GET / HTTP/1.1");
   sk_http_header* header = sk_http_parse_header(input1);
@@ -53,12 +53,28 @@ TEST(HttpTest, parse)
   sk_http_header_free(header);
 }
 
-TEST(HandlerTest, extname)
+TEST(file, extname)
 {
-  cstring(input1, "hoge.jpg");
-  char buff[8];
-  sk_handler_extname(input1, buff);
-  EXPECT_STREQ("jpg", buff);
+  cstring(jpg, "hoge.jpg");
+  EXPECT_STREQ("jpg", sk_file_extname(jpg));
+
+  cstring(no_ext, "no_ext");
+  EXPECT_STREQ("", sk_file_extname(no_ext));
+}
+
+TEST(file, content_type_ext)
+{
+  cstring(jpg, "jpg");
+  EXPECT_STREQ("image/jpeg", sk_file_content_type_ext(jpg));
+
+  cstring(jpeg, "jpeg");
+  EXPECT_STREQ("image/jpeg", sk_file_content_type_ext(jpeg));
+}
+
+TEST(file, content_type)
+{
+  cstring(jpg, "/img/hoge.jpg");
+  EXPECT_STREQ("image/jpeg", sk_file_content_type(jpg));
 }
 
 int main(int argc, char **argv) {
