@@ -6,5 +6,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdint.h>
+
+#define NL "\r\n"
 
 #endif /* _SUZUKA_H_ */

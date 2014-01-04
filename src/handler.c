@@ -15,9 +15,11 @@ int sk_send(int sockfd, char* buf, int len)
   return l;
 }
 
+#define RESPONSE_404 "HTTP/1.1 404 Not Found" NL NL
+
 void sk_handler_send_404(int sockfd)
 {
-  sk_send(sockfd, "", 0);
+  sk_send(sockfd, RESPONSE_404, strlen(RESPONSE_404));
 }
 
 void sk_handler_send_file(int sockfd, char* rpath)
@@ -34,19 +36,14 @@ void sk_handler_send_file(int sockfd, char* rpath)
     sk_handler_send_404(sockfd);
     return;
   }
-
-  #define NL "\r\n"
   
-  const char* content_type = sk_file_content_type(rpath);
   char buff[1024];
-  sprintf(buff,
-          "HTTP/1.1 200 OK" NL
-          "Content-Type: %s" NL
-          "Content-Length: %lld" NL
-          "Connection: close" NL
-          "Server: suzuka" NL NL,
-          content_type,
-          file_stat.st_size);
+  sk_http_response response = {
+    .status_code = 200,
+    .content_type = sk_file_content_type(rpath),
+    .content_length = file_stat.st_size
+  };
+  sk_http_write_response_header(&response, buff, 1024);
   sk_send(sockfd, buff, strlen(buff));
 
   size_t readbytes;

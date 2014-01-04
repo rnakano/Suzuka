@@ -25,3 +25,17 @@ void sk_http_header_free(sk_http_header* header)
 {
   sk_free(header);
 }
+
+void sk_http_write_response_header(sk_http_response* response, char* buff, size_t buflen)
+{
+  snprintf(buff,
+           buflen,
+          "HTTP/1.1 %d OK" NL
+          "Content-Type: %s" NL
+          "Content-Length: %lld" NL
+          "Connection: close" NL
+          "Server: suzuka" NL NL,
+          response->status_code,
+          response->content_type,
+          response->content_length);
+}
