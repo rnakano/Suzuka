@@ -14,7 +14,7 @@ sk_http_header* sk_http_parse_header(char* str)
 
   version = strtok_r(NULL, " \r\n", &saveptr);
   if(version == NULL) return NULL;
-  if(strcmp(version, "HTTP/1.1") != 0) return NULL;
+  if(strcmp(version, "HTTP/1.1") != 0 && strcmp(version, "HTTP/1.0") != 0) return NULL;
 
   sk_http_header *header = sk_malloc(sizeof(sk_http_header));
   strncpy(header->path, path, PATHLEN);
