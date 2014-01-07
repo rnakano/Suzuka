@@ -3,9 +3,12 @@
 #include "http.h"
 #include "log.h"
 #include "handler.h"
+#include <signal.h>
 
 int main(int argc, char *argv[])
 {
+  signal(SIGPIPE , SIG_IGN);
+
   sk_server server;
   server.port = 8080;
   server.addr = "127.0.0.1";
