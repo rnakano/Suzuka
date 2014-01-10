@@ -1,6 +1,6 @@
 CC ?= gcc
 CPC = g++
-NAMES = http log memory server handler file
+NAMES = http log memory server handler file sock
 OBJS  = $(addsuffix .o, $(NAMES))
 MAIN  = main.o
 CFLAGS = -O0 -Wall -std=c99 -g
