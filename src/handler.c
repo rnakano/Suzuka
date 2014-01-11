@@ -6,14 +6,7 @@
 #include "file.h"
 #include "sock.h"
 
-void sk_handler_send_file(FILE* sock_fp, char* rpath)
-{
-  char path[256];
-  sprintf(path, "../public%s", rpath);
-  sk_sock_send_file(sock_fp, path);
-}
-
-void sk_handler_simple_send(int sockfd)
+void sk_handler_simple_send(sk_server* server, int sockfd)
 {
   char buff[256];
   FILE* sock_fp = fdopen(sockfd, "r+");
@@ -34,7 +27,10 @@ void sk_handler_simple_send(int sockfd)
     sk_sock_send_404(sock_fp);
     goto end_handler;
   }
-  sk_handler_send_file(sock_fp, header->path);
+
+  char path[256];
+  sprintf(path, "%s%s", server->document_root, header->path);
+  sk_sock_send_file(sock_fp, path);
 
 end_handler:
   if(header) sk_http_header_free(header);

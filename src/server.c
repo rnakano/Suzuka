@@ -38,6 +38,6 @@ void sk_server_start(sk_server* server)
     if((client_sock = accept(server_sock, (struct sockaddr*)&clt, &sin_siz)) < 0){
       sk_log_perror("cannot accept");
     }
-    server->handler(client_sock);
+    server->handler(server, client_sock);
   }
 }

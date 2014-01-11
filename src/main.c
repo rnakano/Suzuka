@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
   server.port = 8080;
   server.addr = "127.0.0.1";
   server.handler = sk_handler_simple_send;
+  server.document_root = "../public";
 
   sk_server_start(&server);
   return 0;
