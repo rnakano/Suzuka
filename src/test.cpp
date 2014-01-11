@@ -77,6 +77,24 @@ TEST(file, content_type)
   EXPECT_STREQ("image/jpeg", sk_file_content_type(jpg));
 }
 
+TEST(file, validate_path)
+{
+  cstring(ok, "/hoge/img.jpg");
+  EXPECT_TRUE(sk_file_validate_path(ok));
+
+  cstring(index, "/");
+  EXPECT_TRUE(sk_file_validate_path(index));
+
+  cstring(root, "//dev/random");
+  EXPECT_FALSE(sk_file_validate_path(root));
+
+  cstring(parent, "/hoge/../some/dir");
+  EXPECT_FALSE(sk_file_validate_path(parent));
+
+  cstring(noslash, "hoge");
+  EXPECT_FALSE(sk_file_validate_path(noslash));
+}
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();

@@ -29,3 +29,24 @@ const char* sk_file_extname(const char* path)
   return "";
 }
 
+bool sk_file_validate_path(const char* path)
+{
+  /* ex. GET noslash.html */
+  if(path[0] != '/') {
+    return false;
+  }
+  int n = strlen(path);
+  for (int i = 0; i < n; i++){
+    if(path[i] == '/') {
+      /* ex. GET /double//shash */
+      if(path[i+1] && path[i+1] == '/') {
+        return false;
+      }
+      /* ex. GET /directory/../traversal */
+      if(path[i+1] && path[i+2] && path[i+1] == '.' && path[i+2] == '.') {
+        return false;
+      }
+    }
+  }
+  return true;
+}
