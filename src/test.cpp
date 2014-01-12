@@ -8,6 +8,7 @@ extern "C" {
   #include <alloca.h>
   #include "http.h"
   #include "file.h"
+  #include "image.h"
 }
 
 #define cstring(varname, x) \
@@ -93,6 +94,47 @@ TEST(file, validate_path)
 
   cstring(noslash, "hoge");
   EXPECT_FALSE(sk_file_validate_path(noslash));
+}
+
+TEST(image, parse_term)
+{
+  sk_image_request request;
+  memset(&request, 0, sizeof(request));
+  cstring(term1, "w=30");
+  sk_image_parse_term(term1, &request);
+  EXPECT_EQ(30, request.width);
+
+  cstring(term2, "h=15");
+  sk_image_parse_term(term2, &request);
+  EXPECT_EQ(15, request.height);
+
+  memset(&request, 0, sizeof(request));
+  cstring(term3, "w=auto");
+  sk_image_parse_term(term3, &request);
+  EXPECT_TRUE(request.convert_flag & 2);
+}
+
+TEST(image, parse_request)
+{
+  sk_image_request request;
+  memset(&request, 0, sizeof(request));
+  cstring(term1, "/hoge.png?w=10&h=20");
+  sk_image_parse_request(term1, &request);
+  EXPECT_EQ(10, request.width);
+  EXPECT_EQ(20, request.height);
+  EXPECT_STREQ("/hoge.png", request.path);
+
+  cstring(term2, "/img/somesome/dir.hoge/a.jpg?h=15");
+  sk_image_parse_request(term2, &request);
+  EXPECT_EQ(15, request.height);
+
+  cstring(term3, "/img/somesome/dir.hoge/a.jpg");
+  sk_image_parse_request(term3, &request);
+  EXPECT_STREQ("/img/somesome/dir.hoge/a.jpg", request.path);
+  EXPECT_TRUE(request.convert_flag & 1);
+
+  cstring(term4, "/img?invalid=");
+  sk_image_parse_term(term4, &request);
 }
 
 int main(int argc, char **argv) {
